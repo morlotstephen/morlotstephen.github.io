@@ -3,214 +3,375 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L'Écho Digital | Expérience Visuelle</title>
+    <title>Stephen Morlot | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
     <style>
-        /* --- TYPOGRAPHIE & VARIABLES --- */
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Inter:wght@300;400&display=swap');
-
+        /* --- VARIABLES & BASE --- */
         :root {
-            --bg-color: #0a0a0c;
-            --accent-primary: #ff5f31; /* Nectar */
-            --accent-secondary: #8a2be2; /* Indigo */
-            --text-main: #f0f0f0;
-            --font-display: 'Playfair Display', serif;
-            --font-sans: 'Inter', sans-serif;
+            --bg-color: #050505;
+            --card-bg: #111111;
+            --accent-color: #3b82f6; /* Bleu électrique */
+            --text-main: #ffffff;
+            --text-dim: #a1a1aa;
+            --font-header: 'Outfit', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: var(--font-sans);
-            overflow-x: hidden;
+            font-family: var(--font-body);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* --- CANVAS PARTICULES --- */
-        #particle-canvas {
+        /* --- RÉUTILISABLE --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        section {
+            padding: 100px 10%;
+        }
+
+        h2 {
+            font-family: var(--font-header);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .highlight {
+            color: var(--accent-color);
+        }
+
+        /* --- NAVBAR --- */
+        nav {
             position: fixed;
             top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.6;
+            padding: 20px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* --- LAYOUT --- */
-        section {
-            min-height: 100vh;
+        .logo {
+            font-family: var(--font-header);
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- HERO --- */
+        #home {
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 5vw;
-            position: relative;
+            text-align: center;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, rgba(5, 5, 5, 1) 70%);
         }
 
-        .container {
-            max-width: 1000px;
-            width: 100%;
-            z-index: 2;
+        .hero-title {
+            font-family: var(--font-header);
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease;
         }
 
-        /* --- EFFETS DE TEXTE --- */
-        h1 {
-            font-family: var(--font-display);
-            font-size: clamp(3rem, 12vw, 8rem);
-            line-height: 0.9;
-            text-transform: uppercase;
-            font-style: italic;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
-            transform: skewY(-2deg);
-        }
-
-        .parallax-box {
-            position: relative;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            padding: 3rem;
-            border-left: 4px solid var(--accent-primary);
-            transition: transform 0.1s ease-out;
-            margin: 2rem 0;
-        }
-
-        p {
+        .hero-subtitle {
             font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
             max-width: 600px;
-            margin-bottom: 1.5rem;
-            color: #ccc;
+            animation: fadeInUp 1.2s ease;
         }
 
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            font-size: 0.8rem;
-            letter-spacing: 0.3rem;
+        .btn {
+            padding: 12px 30px;
+            border: 2px solid var(--accent-color);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            animation: fadeInUp 1.4s ease;
+        }
+
+        .btn:hover {
+            background: var(--accent-color);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+
+        /* --- ABOUT --- */
+        #about .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text p {
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- PROJECTS --- */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-color);
+        }
+
+        .project-img {
+            width: 100%;
+            height: 200px;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #333;
+            font-family: var(--font-header);
             text-transform: uppercase;
-            animation: bounce 2s infinite;
-            color: var(--accent-primary);
+            letter-spacing: 2px;
         }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
+        .project-info {
+            padding: 25px;
         }
 
-        /* --- DÉCORATIONS --- */
-        .floating-shape {
-            position: absolute;
-            z-index: 1;
-            filter: blur(50px);
-            border-radius: 50%;
-            opacity: 0.3;
+        .project-info h3 {
+            margin-bottom: 10px;
+            font-family: var(--font-header);
+        }
+
+        .project-info p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 50px 10%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+        }
+
+        .socials {
+            margin-bottom: 20px;
+        }
+
+        .socials a {
+            color: var(--text-main);
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .socials a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            nav { padding: 15px 5%; }
+            .nav-links { display: none; }
+            #about .content { grid-template-columns: 1fr; }
+            section { padding: 80px 5%; }
+            .hero-title { font-size: 3.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="particle-canvas"></canvas>
+    <nav>
+        <a href="#home" class="logo">STEPHEN<span class="highlight">MORLOT</span></a>
+        <ul class="nav-links">
+            <li><a href="#home">Accueil</a></li>
+            <li><a href="#about">À propos</a></li>
+            <li><a href="#projects">Projets</a></li>
+            <li><a href="https://github.com/morlotstephen" target="_blank">GitHub</a></li>
+        </ul>
+    </nav>
 
-    <section id="hero">
-        <div class="container">
-            <h1 data-speed="2">L'Écho<br>Digital.</h1>
-            <p>Une exploration où le code devient matière, et le mouvement une poésie. Bienvenue dans l'interstice entre le réel et le virtuel.</p>
-        </div>
-        <div class="scroll-indicator">Scroll</div>
+    <section id="home">
+        <h1 class="hero-title">Stephen <span class="highlight">Morlot.</span></h1>
+        <p class="hero-subtitle">Étudiant passionné par le développement et les nouvelles technologies. Bienvenue sur mon espace digital.</p>
+        <a href="https://github.com/morlotstephen" target="_blank" class="btn">Explorer mon GitHub</a>
     </section>
 
-    <section>
-        <div class="container">
-            <div class="parallax-box" data-speed="-1">
-                <h2 style="font-family: var(--font-display); font-size: 3rem; margin-bottom: 1rem;">L'Art du Mouvement</h2>
-                <p>Chaque particule que vous voyez est générée mathématiquement, flottant dans un vide simulé. Le parallaxe ici n'est pas qu'une illusion de profondeur, c'est une invitation à ralentir votre lecture pour observer le décalage des strates numériques.</p>
-                <p>Ce projet utilise <strong>Canvas API</strong> pour la performance et des calculs de <strong>scroll-offset</strong> personnalisés pour la fluidité.</p>
+    <section id="about" class="reveal">
+        <h2>À <span class="highlight">propos</span></h2>
+        <div class="content">
+            <div class="about-text">
+                <p>Curieux et rigoureux, je consacre mon temps à l'apprentissage du développement web et à la création de solutions innovantes.</p>
+                <p>Mon portfolio reflète mon parcours et les compétences que je développe chaque jour pour transformer des idées complexes en expériences utilisateur fluides.</p>
+                <div class="skills">
+                    <span class="skill-tag">Développement Web</span>
+                    <span class="skill-tag">Git & GitHub</span>
+                    <span class="skill-tag">UI/UX Design</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">Open Source</span>
+                </div>
+            </div>
+            <div class="about-visual">
+                <div style="background: var(--accent-color); height: 5px; width: 50px; margin-bottom: 20px;"></div>
+                <p style="font-style: italic; color: var(--text-dim);">"L'innovation, c'est savoir transformer le code en opportunités."</p>
             </div>
         </div>
     </section>
 
-    <section>
-        <div class="container" style="text-align: right;">
-            <h2 style="font-family: var(--font-display); font-size: 5rem; color: var(--accent-secondary);">Infinie<br>Évolution</h2>
-            <p style="margin-left: auto;">Conçu pour captiver. Codé pour exister.</p>
+    <section id="projects">
+        <h2 class="reveal">Mes <span class="highlight">Projets</span></h2>
+        <div class="project-grid">
+            <a href="https://github.com/morlotstephen" target="_blank" class="project-card reveal">
+                <div class="project-img">PROJET 01</div>
+                <div class="project-info">
+                    <h3>Infrastructure & Code</h3>
+                    <p>Découvre mes derniers dépôts GitHub et mes contributions sur des projets variés.</p>
+                </div>
+            </a>
+            <a href="https://github.com/morlotstephen" target="_blank" class="project-card reveal">
+                <div class="project-img">PROJET 02</div>
+                <div class="project-info">
+                    <h3>Web Applications</h3>
+                    <p>Conception d'interfaces modernes et performantes utilisant les dernières technologies front-end.</p>
+                </div>
+            </a>
+            <a href="https://github.com/morlotstephen" target="_blank" class="project-card reveal">
+                <div class="project-img">PROJET 03</div>
+                <div class="project-info">
+                    <h3>Expérimentations</h3>
+                    <p>Tests de nouveaux frameworks et bibliothèques pour repousser les limites du web.</p>
+                </div>
+            </a>
         </div>
     </section>
 
+    <footer id="contact">
+        <div class="socials">
+            <a href="https://github.com/morlotstephen" target="_blank">GitHub</a>
+            <a href="https://morlotstephen.github.io/" target="_blank">Site Web</a>
+        </div>
+        <p>© 2024 Stephen Morlot - Tous droits réservés</p>
+    </footer>
+
     <script>
-        /* --- SYSTÈME DE PARTICULES --- */
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+        // --- ANIMATION DE RÉVÉLATION AU SCROLL ---
+        const observerOptions = {
+            threshold: 0.15
+        };
 
-        function initCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-                this.alpha = Math.random() * 0.5 + 0.1;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width || this.x < 0 || this.y > canvas.height || this.y < 0) {
-                    this.reset();
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
                 }
-            }
-            draw() {
-                ctx.fillStyle = `rgba(255, 95, 49, ${this.alpha})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function createParticles() {
-            for (let i = 0; i < 100; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
             });
-            requestAnimationFrame(animateParticles);
-        }
+        }, observerOptions);
 
-        /* --- EFFET PARALLAXE --- */
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            
-            // On cible les éléments avec data-speed
-            document.querySelectorAll('[data-speed]').forEach(el => {
-                const speed = el.getAttribute('data-speed');
-                const yPos = -(scrolled * speed / 10);
-                el.style.transform = `translateY(${yPos}px)`;
-            });
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
         });
 
-        /* --- INITIALISATION --- */
-        window.addEventListener('resize', initCanvas);
-        initCanvas();
-        createParticles();
-        animateParticles();
+        // --- EFFET DE PARALLAXE SUR LE HERO ---
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-title');
+            if(hero) {
+                hero.style.transform = `translateY(${scrolled * 0.2}px)`;
+            }
+        });
     </script>
 </body>
 </html>
