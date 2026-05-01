@@ -1,377 +1,482 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stephen Morlot | Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
-    <style>
-        /* --- VARIABLES & BASE --- */
-        :root {
-            --bg-color: #050505;
-            --card-bg: #111111;
-            --accent-color: #3b82f6; /* Bleu électrique */
-            --text-main: #ffffff;
-            --text-dim: #a1a1aa;
-            --font-header: 'Outfit', sans-serif;
-            --font-body: 'Inter', sans-serif;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: var(--font-body);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* --- RÉUTILISABLE --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        section {
-            padding: 100px 10%;
-        }
-
-        h2 {
-            font-family: var(--font-header);
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .highlight {
-            color: var(--accent-color);
-        }
-
-        /* --- NAVBAR --- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 20px 10%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(5, 5, 5, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .logo {
-            font-family: var(--font-header);
-            font-weight: 800;
-            font-size: 1.5rem;
-            letter-spacing: -1px;
-            text-decoration: none;
-            color: white;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-dim);
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-color);
-        }
-
-        /* --- HERO --- */
-        #home {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, rgba(5, 5, 5, 1) 70%);
-        }
-
-        .hero-title {
-            font-family: var(--font-header);
-            font-size: clamp(3rem, 10vw, 6rem);
-            font-weight: 800;
-            line-height: 1;
-            margin-bottom: 1rem;
-            animation: fadeInDown 1s ease;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-dim);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            animation: fadeInUp 1.2s ease;
-        }
-
-        .btn {
-            padding: 12px 30px;
-            border: 2px solid var(--accent-color);
-            border-radius: 50px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            animation: fadeInUp 1.4s ease;
-        }
-
-        .btn:hover {
-            background: var(--accent-color);
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-        }
-
-        /* --- ABOUT --- */
-        #about .content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: center;
-        }
-
-        .about-text p {
-            color: var(--text-dim);
-            margin-bottom: 1rem;
-        }
-
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .skill-tag {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* --- PROJECTS --- */
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .project-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: var(--transition);
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-color);
-        }
-
-        .project-img {
-            width: 100%;
-            height: 200px;
-            background: #1a1a1a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #333;
-            font-family: var(--font-header);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .project-info {
-            padding: 25px;
-        }
-
-        .project-info h3 {
-            margin-bottom: 10px;
-            font-family: var(--font-header);
-        }
-
-        .project-info p {
-            color: var(--text-dim);
-            font-size: 0.9rem;
-        }
-
-        /* --- FOOTER --- */
-        footer {
-            padding: 50px 10%;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--text-dim);
-        }
-
-        .socials {
-            margin-bottom: 20px;
-        }
-
-        .socials a {
-            color: var(--text-main);
-            margin: 0 15px;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .socials a:hover {
-            color: var(--accent-color);
-        }
-
-        /* --- ANIMATIONS --- */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 768px) {
-            nav { padding: 15px 5%; }
-            .nav-links { display: none; }
-            #about .content { grid-template-columns: 1fr; }
-            section { padding: 80px 5%; }
-            .hero-title { font-size: 3.5rem; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stephen Morlot — Data & AI Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#050d1a;--bg2:#071225;--card:#0a1a2e;--card2:#0d2040;
+  --blue:#1a6cff;--blue-light:#4d8fff;--accent:#00c8ff;--accent2:#ff6b35;
+  --text:#e8f0ff;--text-muted:#7a9abf;
+  --border:rgba(26,108,255,0.18);--border2:rgba(0,200,255,0.12);
+  --glow:rgba(26,108,255,0.25);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overflow-x:hidden;cursor:none}
+.cursor{position:fixed;width:12px;height:12px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.15s ease;mix-blend-mode:screen}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--blue-light);border-radius:50%;pointer-events:none;z-index:9998;transition:transform 0.35s ease,opacity 0.2s;opacity:0.5}
+#starfield{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5%;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,13,26,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Space Mono',monospace;font-size:.85rem;color:var(--accent);letter-spacing:.08em}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--text-muted);font-size:.82rem;text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s}
+.nav-links a:hover{color:var(--text)}.nav-links a:hover::after{width:100%}
+.lang-btn{display:flex;gap:.4rem}
+.lang-btn button{background:none;border:1px solid var(--border);color:var(--text-muted);font-family:'Space Mono',monospace;font-size:.72rem;padding:4px 10px;border-radius:4px;cursor:none;transition:all .2s;letter-spacing:.05em}
+.lang-btn button.active,.lang-btn button:hover{border-color:var(--blue);color:var(--blue-light);background:rgba(26,108,255,.08)}
+section{position:relative;z-index:1;padding:100px 8%}
+#hero{min-height:100vh;display:flex;align-items:center;padding-top:120px}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%;max-width:1200px;margin:0 auto}
+.hero-photo-wrap{display:flex;justify-content:center}
+.hero-photo{width:280px;height:280px;border-radius:50%;background:linear-gradient(135deg,var(--card),var(--card2));border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;box-shadow:0 0 60px var(--glow),0 0 120px rgba(26,108,255,.1);animation:photoPulse 4s ease-in-out infinite}
+.hero-photo::before{content:'';position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(var(--blue),var(--accent),var(--blue));z-index:-1;opacity:.4;animation:spin 8s linear infinite}
+@keyframes photoPulse{0%,100%{box-shadow:0 0 60px var(--glow),0 0 120px rgba(26,108,255,.1)}50%{box-shadow:0 0 80px rgba(26,108,255,.4),0 0 160px rgba(0,200,255,.15)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.hero-text{opacity:0;animation:fadeUp .9s .3s forwards}
+.hero-greeting{font-family:'Space Mono',monospace;font-size:.8rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+.hero-name{font-size:clamp(2.2rem,4vw,3.5rem);font-weight:800;line-height:1.1;margin-bottom:.5rem}
+.hero-name span{color:var(--blue-light)}
+.hero-subtitle{font-family:'Space Mono',monospace;font-size:.85rem;color:var(--text-muted);margin-bottom:1.5rem;min-height:1.4em}
+.hero-subtitle .typed{color:var(--accent)}
+.hero-bio{font-size:.95rem;color:var(--text-muted);line-height:1.7;margin-bottom:2rem;max-width:480px}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+.btn-primary{background:var(--blue);color:#fff;padding:12px 28px;border-radius:6px;font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;text-decoration:none;letter-spacing:.05em;text-transform:uppercase;border:none;cursor:none;transition:all .25s;box-shadow:0 4px 20px rgba(26,108,255,.35)}
+.btn-primary:hover{background:var(--blue-light);box-shadow:0 6px 30px rgba(26,108,255,.5);transform:translateY(-2px)}
+.social-links{display:flex;gap:.75rem}
+.social-links a{width:40px;height:40px;border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-muted);text-decoration:none;font-size:1rem;transition:all .2s}
+.social-links a:hover{border-color:var(--blue);color:var(--blue-light);background:rgba(26,108,255,.08);transform:translateY(-2px)}
+#skills{background:var(--bg2)}
+.section-title{text-align:center;margin-bottom:3.5rem}
+.section-title h2{font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;margin-bottom:.5rem}
+.section-title .line{width:48px;height:3px;background:var(--blue);margin:0 auto;border-radius:2px}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:1rem;max-width:1100px;margin:0 auto}
+.skill-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem .8rem;display:flex;flex-direction:column;align-items:center;gap:.6rem;transition:all .25s;cursor:default;opacity:0;transform:translateY(20px)}
+.skill-card.visible{animation:fadeUp .5s forwards}
+.skill-card:hover{border-color:var(--blue);background:var(--card2);transform:translateY(-4px);box-shadow:0 8px 24px var(--glow)}
+.skill-icon{font-size:2rem;line-height:1}
+.skill-name{font-family:'Space Mono',monospace;font-size:.65rem;text-align:center;color:var(--text-muted);letter-spacing:.03em;text-transform:uppercase}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto}
+.project-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .3s;cursor:none;opacity:0;transform:translateY(24px)}
+.project-card.visible{animation:fadeUp .5s forwards}
+.project-card:hover{border-color:var(--blue);transform:translateY(-6px);box-shadow:0 16px 40px var(--glow)}
+.project-thumb{height:160px;background:linear-gradient(135deg,var(--card2),#0d1f3a);display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;overflow:hidden}
+.project-thumb::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(26,108,255,.15),transparent 70%)}
+.project-body{padding:1.4rem}
+.project-tag{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem}
+.project-title{font-size:1rem;font-weight:700;margin-bottom:.6rem;color:var(--text);line-height:1.3}
+.project-desc{font-size:.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.2rem}
+.project-actions{display:flex;gap:.75rem}
+.project-btn{font-family:'Space Mono',monospace;font-size:.7rem;padding:7px 14px;border-radius:6px;text-decoration:none;letter-spacing:.04em;transition:all .2s;display:inline-flex;align-items:center;gap:.4rem;cursor:none;border:none;background:none}
+.project-btn.primary{background:rgba(26,108,255,.15);border:1px solid var(--blue);color:var(--blue-light)}
+.project-btn.primary:hover{background:var(--blue);color:#fff}
+.project-btn.secondary{border:1px solid var(--border);color:var(--text-muted)}
+.project-btn.secondary:hover{border-color:var(--text-muted);color:var(--text)}
+#experience{background:var(--bg2)}
+.timeline{max-width:700px;margin:0 auto;position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--blue),transparent)}
+.timeline-item{position:relative;margin-bottom:2.5rem;opacity:0;transform:translateX(-20px)}
+.timeline-item.visible{animation:fadeRight .5s forwards}
+.timeline-dot{position:absolute;left:-2.4rem;top:4px;width:12px;height:12px;border-radius:50%;background:var(--blue);box-shadow:0 0 12px var(--blue)}
+.timeline-date{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--accent);letter-spacing:.08em;margin-bottom:.4rem}
+.timeline-role{font-size:1rem;font-weight:700;margin-bottom:.2rem}
+.timeline-org{font-size:.82rem;color:var(--blue-light);margin-bottom:.6rem}
+.timeline-desc{font-size:.82rem;color:var(--text-muted);line-height:1.6}
+.contact-inner{max-width:600px;margin:0 auto;text-align:center}
+.contact-intro{font-size:.95rem;color:var(--text-muted);line-height:1.7;margin-bottom:2.5rem}
+.contact-links{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.contact-link{display:inline-flex;align-items:center;gap:.6rem;padding:12px 22px;border-radius:8px;border:1px solid var(--border);color:var(--text-muted);text-decoration:none;font-size:.82rem;font-family:'Space Mono',monospace;transition:all .25s}
+.contact-link:hover{border-color:var(--blue);color:var(--blue-light);background:rgba(26,108,255,.08);transform:translateY(-3px)}
+footer{text-align:center;padding:2rem;border-top:1px solid var(--border);font-family:'Space Mono',monospace;font-size:.7rem;color:var(--text-muted);letter-spacing:.05em;position:relative;z-index:1}
+.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(3,8,18,.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:2rem;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:16px;max-width:680px;width:100%;max-height:85vh;overflow-y:auto;transform:scale(.92) translateY(20px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);scrollbar-width:thin;scrollbar-color:var(--blue) transparent}
+.modal-overlay.open .modal{transform:scale(1) translateY(0)}
+.modal-header{position:sticky;top:0;z-index:10;background:var(--card);padding:1.4rem 1.6rem 1rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start}
+.modal-tag{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3rem}
+.modal-title{font-size:1.2rem;font-weight:700}
+.modal-close{background:none;border:1px solid var(--border);color:var(--text-muted);width:32px;height:32px;border-radius:6px;cursor:none;font-size:1rem;transition:all .2s;flex-shrink:0;margin-top:2px}
+.modal-close:hover{border-color:var(--blue);color:var(--text)}
+.modal-body{padding:1.6rem}
+.modal-body p{font-size:.88rem;color:var(--text-muted);line-height:1.75;margin-bottom:1rem}
+.modal-body h3{font-size:.85rem;font-weight:700;color:var(--blue-light);margin:1.2rem 0 .6rem;text-transform:uppercase;letter-spacing:.06em;font-family:'Space Mono',monospace}
+.modal-body ul{list-style:none;padding:0}
+.modal-body ul li{font-size:.82rem;color:var(--text-muted);padding:.3rem 0 .3rem 1.2rem;position:relative;line-height:1.5}
+.modal-body ul li::before{content:'▸';position:absolute;left:0;color:var(--blue)}
+.modal-body code{font-family:'Space Mono',monospace;background:rgba(0,0,0,.4);border:1px solid var(--border);padding:.15em .4em;border-radius:3px;font-size:.78rem;color:var(--accent)}
+.modal-body pre{background:rgba(0,0,0,.5);border:1px solid var(--border2);border-radius:8px;padding:1rem;margin:.75rem 0;overflow-x:auto}
+.modal-body pre code{background:none;border:none;padding:0;font-size:.78rem;color:var(--text)}
+.modal-link{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.2rem;margin-right:.5rem;padding:10px 20px;background:rgba(26,108,255,.12);border:1px solid var(--blue);border-radius:8px;color:var(--blue-light);text-decoration:none;font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.05em;transition:all .2s}
+.modal-link:hover{background:var(--blue);color:#fff}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:768px){
+  .hero-inner{grid-template-columns:1fr;gap:2rem;text-align:center}
+  .hero-bio,.hero-cta{max-width:100%}
+  .hero-cta{justify-content:center}
+  .social-links{justify-content:center}
+  .nav-links{display:none}
+  .skills-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr))}
+  section{padding:70px 5%}
+}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--blue);border-radius:2px}
+</style>
 </head>
 <body>
+<canvas id="starfield"></canvas>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-    <nav>
-        <a href="#home" class="logo">STEPHEN<span class="highlight">MORLOT</span></a>
-        <ul class="nav-links">
-            <li><a href="#home">Accueil</a></li>
-            <li><a href="#about">À propos</a></li>
-            <li><a href="#projects">Projets</a></li>
-            <li><a href="https://github.com/morlotstephen" target="_blank">GitHub</a></li>
-        </ul>
-    </nav>
+<nav>
+  <div class="nav-logo">SM<span style="color:var(--text-muted)">_dev</span></div>
+  <ul class="nav-links">
+    <li><a href="#hero" data-fr="Accueil" data-en="Home">Accueil</a></li>
+    <li><a href="#skills" data-fr="Compétences" data-en="Skills">Compétences</a></li>
+    <li><a href="#projects" data-fr="Projets" data-en="Projects">Projets</a></li>
+    <li><a href="#experience" data-fr="Parcours" data-en="Experience">Parcours</a></li>
+    <li><a href="#contact" data-fr="Contact" data-en="Contact">Contact</a></li>
+  </ul>
+  <div class="lang-btn">
+    <button onclick="setLang('fr')" id="btn-fr" class="active">FR</button>
+    <button onclick="setLang('en')" id="btn-en">EN</button>
+  </div>
+</nav>
 
-    <section id="home">
-        <h1 class="hero-title">Stephen <span class="highlight">Morlot.</span></h1>
-        <p class="hero-subtitle">Étudiant passionné par le développement et les nouvelles technologies. Bienvenue sur mon espace digital.</p>
-        <a href="https://github.com/morlotstephen" target="_blank" class="btn">Explorer mon GitHub</a>
-    </section>
-
-    <section id="about" class="reveal">
-        <h2>À <span class="highlight">propos</span></h2>
-        <div class="content">
-            <div class="about-text">
-                <p>Curieux et rigoureux, je consacre mon temps à l'apprentissage du développement web et à la création de solutions innovantes.</p>
-                <p>Mon portfolio reflète mon parcours et les compétences que je développe chaque jour pour transformer des idées complexes en expériences utilisateur fluides.</p>
-                <div class="skills">
-                    <span class="skill-tag">Développement Web</span>
-                    <span class="skill-tag">Git & GitHub</span>
-                    <span class="skill-tag">UI/UX Design</span>
-                    <span class="skill-tag">JavaScript</span>
-                    <span class="skill-tag">Open Source</span>
-                </div>
-            </div>
-            <div class="about-visual">
-                <div style="background: var(--accent-color); height: 5px; width: 50px; margin-bottom: 20px;"></div>
-                <p style="font-style: italic; color: var(--text-dim);">"L'innovation, c'est savoir transformer le code en opportunités."</p>
-            </div>
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-photo-wrap">
+      <div class="hero-photo"><span style="font-size:2.5rem;font-weight:800;font-family:'Syne',sans-serif;color:var(--blue-light);letter-spacing:.05em">SM</span></div>
+    </div>
+    <div class="hero-text">
+      <div class="hero-greeting" data-fr="Bonjour, je suis" data-en="Hello, I'm">Bonjour, je suis</div>
+      <h1 class="hero-name">Morlot <span>Stephen</span></h1>
+      <div class="hero-subtitle">
+        <span data-fr="Spécialisé en " data-en="Specialised in ">Spécialisé en </span><span class="typed" id="typed"></span>
+      </div>
+      <p class="hero-bio" id="hero-bio"
+         data-fr="Expert en Data, automatisation et IA (Prompt Engineering, AI Analytics), je fais parler les données pour booster vos performances. Ouvert à de nouveaux défis professionnels où la donnée est au cœur de l'innovation !"
+         data-en="Data, automation & AI expert (Prompt Engineering, AI Analytics), I turn raw data into actionable insights that drive performance. Open to new professional challenges where data is at the heart of innovation!">
+        Expert en Data, automatisation et IA (Prompt Engineering, AI Analytics), je fais parler les données pour booster vos performances. Ouvert à de nouveaux défis professionnels où la donnée est au cœur de l'innovation !
+      </p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})" data-fr="Voir mes projets" data-en="View my projects">Voir mes projets</button>
+        <div class="social-links">
+          <a href="https://github.com/morlotstephen?tab=repositories" target="_blank" title="GitHub">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/stephen-morlot-35716324a/" target="_blank" title="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="mailto:morlotstephen.pro@gmail.com" title="Email">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <section id="projects">
-        <h2 class="reveal">Mes <span class="highlight">Projets</span></h2>
-        <div class="project-grid">
-            <a href="https://github.com/morlotstephen" target="_blank" class="project-card reveal">
-                <div class="project-img">PROJET 01</div>
-                <div class="project-info">
-                    <h3>Infrastructure & Code</h3>
-                    <p>Découvre mes derniers dépôts GitHub et mes contributions sur des projets variés.</p>
-                </div>
-            </a>
-            <a href="https://github.com/morlotstephen" target="_blank" class="project-card reveal">
-                <div class="project-img">PROJET 02</div>
-                <div class="project-info">
-                    <h3>Web Applications</h3>
-                    <p>Conception d'interfaces modernes et performantes utilisant les dernières technologies front-end.</p>
-                </div>
-            </a>
-            <a href="https://github.com/morlotstephen" target="_blank" class="project-card reveal">
-                <div class="project-img">PROJET 03</div>
-                <div class="project-info">
-                    <h3>Expérimentations</h3>
-                    <p>Tests de nouveaux frameworks et bibliothèques pour repousser les limites du web.</p>
-                </div>
-            </a>
+<section id="skills">
+  <div class="section-title">
+    <h2 data-fr="Compétences" data-en="Skills">Compétences</h2>
+    <div class="line"></div>
+  </div>
+  <div class="skills-grid" id="skills-grid"></div>
+</section>
+
+<section id="projects">
+  <div class="section-title">
+    <h2 data-fr="Mes Projets" data-en="My Projects">Mes Projets</h2>
+    <div class="line"></div>
+  </div>
+  <div class="projects-grid" id="projects-grid"></div>
+</section>
+
+<section id="experience">
+  <div class="section-title">
+    <h2 data-fr="Mon Parcours" data-en="Experience">Mon Parcours</h2>
+    <div class="line"></div>
+  </div>
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<section id="contact">
+  <div class="section-title">
+    <h2 data-fr="Contact" data-en="Contact">Contact</h2>
+    <div class="line"></div>
+  </div>
+  <div class="contact-inner">
+    <p class="contact-intro"
+       data-fr="Une idée de projet, une opportunité professionnelle, ou simplement envie d'échanger autour de la data et de l'IA ? Je suis disponible et ouvert à toute collaboration."
+       data-en="A project idea, a professional opportunity, or just want to talk about data and AI? I'm available and open to any collaboration.">
+      Une idée de projet, une opportunité professionnelle, ou simplement envie d'échanger autour de la data et de l'IA ? Je suis disponible et ouvert à toute collaboration.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:morlotstephen.pro@gmail.com" class="contact-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        morlotstephen.pro@gmail.com
+      </a>
+      <a href="https://www.linkedin.com/in/stephen-morlot-35716324a/" target="_blank" class="contact-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/morlotstephen?tab=repositories" target="_blank" class="contact-link">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span data-fr="Conçu & développé par" data-en="Designed & built by">Conçu & développé par</span> Stephen Morlot — 2025
+</footer>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-tag" id="modal-tag"></div>
+        <div class="modal-title" id="modal-title"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ── STARFIELD ──
+(function(){
+  const c=document.getElementById('starfield'),ctx=c.getContext('2d');
+  let W,H,stars=[];
+  function init(){
+    W=c.width=window.innerWidth;H=c.height=window.innerHeight;stars=[];
+    for(let i=0;i<180;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.2,a:Math.random(),speed:Math.random()*.003+.001,dx:(Math.random()-.5)*.15,dy:(Math.random()-.5)*.08});
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s=>{
+      s.a+=s.speed;if(s.a>1)s.a=0;
+      s.x+=s.dx;s.y+=s.dy;
+      if(s.x<0)s.x=W;if(s.x>W)s.x=0;if(s.y<0)s.y=H;if(s.y>H)s.y=0;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(180,210,255,${Math.abs(Math.sin(s.a*Math.PI))*.6})`;ctx.fill();
+    });
+    for(let i=0;i<stars.length;i++)for(let j=i+1;j<stars.length;j++){
+      const d=Math.hypot(stars[i].x-stars[j].x,stars[i].y-stars[j].y);
+      if(d<90){ctx.beginPath();ctx.moveTo(stars[i].x,stars[i].y);ctx.lineTo(stars[j].x,stars[j].y);ctx.strokeStyle=`rgba(26,108,255,${(1-d/90)*.12})`;ctx.lineWidth=.5;ctx.stroke();}
+    }
+    requestAnimationFrame(draw);
+  }
+  init();draw();window.addEventListener('resize',init);
+})();
+
+// ── CURSOR ──
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx-6+'px';cur.style.top=my-6+'px';});
+(function animRing(){rx+=(mx-rx-18)*.1;ry+=(my-ry-18)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='scale(2)';ring.style.opacity='0.9';});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='scale(1)';ring.style.opacity='0.5';});
+});
+
+// ── TYPED ──
+const typedFr=['Data & IA','Automatisation','Python & SQL','Prompt Engineering','AI Analytics'];
+const typedEn=['Data & AI','Automation','Python & SQL','Prompt Engineering','AI Analytics'];
+let typedIdx=0,charIdx=0,deleting=false,lang='fr';
+function typeLoop(){
+  const arr=lang==='fr'?typedFr:typedEn,word=arr[typedIdx%arr.length],el=document.getElementById('typed');
+  if(!deleting){el.textContent=word.slice(0,++charIdx);if(charIdx===word.length){deleting=true;setTimeout(typeLoop,1800);return;}}
+  else{el.textContent=word.slice(0,--charIdx);if(charIdx===0){deleting=false;typedIdx++;setTimeout(typeLoop,300);return;}}
+  setTimeout(typeLoop,deleting?45:80);
+}
+typeLoop();
+
+// ── DATA ──
+const skills=[
+  {icon:'🔌',name:{fr:'Make',en:'Make'}},
+  {icon:'⚙️',name:{fr:'Automatisation',en:'Automation'}},
+  {icon:'🔍',name:{fr:'R.A.G',en:'R.A.G'}},
+  {icon:'📊',name:{fr:'Power BI',en:'Power BI'}},
+  {icon:'🐍',name:{fr:'Python',en:'Python'}},
+  {icon:'🌐',name:{fr:'API',en:'API'}},
+  {icon:'🤖',name:{fr:'AI LLM',en:'AI LLM'}},
+  {icon:'🐼',name:{fr:'Pandas',en:'Pandas'}},
+  {icon:'📗',name:{fr:'Excel',en:'Excel'}},
+  {icon:'📒',name:{fr:'Notion',en:'Notion'}},
+  {icon:'🗄️',name:{fr:'SQL',en:'SQL'}},
+  {icon:'📦',name:{fr:'noSQL',en:'noSQL'}},
+  {icon:'🧠',name:{fr:'Machine Learning',en:'Machine Learning'}},
+  {icon:'🔄',name:{fr:'N8N',en:'N8N'}},
+  {icon:'🐳',name:{fr:'Docker',en:'Docker'}},
+  {icon:'🧹',name:{fr:'Data Cleaning',en:'Data Cleaning'}},
+  {icon:'📈',name:{fr:'MatPlotLib',en:'MatPlotLib'}},
+  {icon:'🏷️',name:{fr:'Dataiku',en:'Dataiku'}},
+  {icon:'🕷️',name:{fr:'Scraping',en:'Scraping'}},
+  {icon:'🌿',name:{fr:'Git',en:'Git'}},
+  {icon:'📣',name:{fr:'Marketing',en:'Marketing'}},
+  {icon:'🍜',name:{fr:'BeautifulSoup',en:'BeautifulSoup'}},
+  {icon:'📋',name:{fr:'Tableau',en:'Tableau'}},
+];
+
+const projects=[
+  {
+    id:'scraping',emoji:'⚽',
+    tag:{fr:'Python · Scraping · Data',en:'Python · Scraping · Data'},
+    title:{fr:'Extraction Stats Football — FBref',en:'Football Stats Scraper — FBref'},
+    desc:{fr:'Script Python de scraping des stats joueurs des 5 grands championnats européens depuis FBref, avec classements et exports CSV.',en:'Python scraping script extracting player stats from the top 5 European leagues on FBref, with rankings and CSV exports.'},
+    link:'https://github.com/morlotstephen?tab=repositories',
+    modal:{
+      fr:{intro:"Script Python automatisé qui extrait les statistiques détaillées des joueurs depuis FBref.com pour les 5 grands championnats européens (Premier League, La Liga, Bundesliga, Serie A, Ligue 1) sur plusieurs saisons.",
+        sections:[
+          {title:'Exécution',items:['<code>python3 groupe_8_github.py</code> — lance le scraping','<code>python3 ranking.py</code> — génère les classements','Export automatique en fichiers CSV']},
+          {title:'Paramètres modifiables',items:['<strong>Saisons</strong> : <code>years = range(2017, 2025)</code>','<strong>Catégories</strong> : possession, passing, gca, shooting, playingtime','<strong>Ligues</strong> : Premier League · La Liga · Bundesliga · Serie A · Ligue 1']},
+          {title:'Durée d\'exécution',items:['~6 min par catégorie','~30 min pour toutes les catégories']},
+        ],link:'https://github.com/morlotstephen?tab=repositories',linklabel:'Voir sur GitHub'},
+      en:{intro:"Automated Python script scraping detailed player statistics from FBref.com across the top 5 European leagues over multiple seasons.",
+        sections:[
+          {title:'Execution',items:['<code>python3 groupe_8_github.py</code> — launches scraping','<code>python3 ranking.py</code> — generates rankings','Automatic CSV export']},
+          {title:'Configurable Parameters',items:['<strong>Seasons</strong>: <code>years = range(2017, 2025)</code>','<strong>Categories</strong>: possession, passing, gca, shooting, playingtime','<strong>Leagues</strong>: Premier League · La Liga · Bundesliga · Serie A · Ligue 1']},
+          {title:'Duration',items:['~6 min per category','~30 min for all categories']},
+        ],link:'https://github.com/morlotstephen?tab=repositories',linklabel:'View on GitHub'}
+    }
+  },
+  {
+    id:'visa',emoji:'🛂',
+    tag:{fr:'Web App · Python · Replit',en:'Web App · Python · Replit'},
+    title:{fr:'VisaFlow — Guide Visa France ↔ Inde',en:'VisaFlow — France ↔ India Visa Guide'},
+    desc:{fr:"App web guidant les citoyens français pour obtenir un visa indien, et les Indiens pour un visa français.",en:'Web app guiding French citizens through the Indian visa process and Indian citizens through the French visa process.'},
+    link:'https://visa-flow-smorlot.replit.app',
+    modal:{
+      fr:{intro:"VisaFlow est une application web développée sur Replit qui simplifie les démarches visa entre la France et l'Inde. Elle fournit une liste claire et à jour des documents requis selon le type de visa demandé.",
+        sections:[
+          {title:'Fonctionnalités',items:['Guide personnalisé selon le type de visa','Documents requis listés clairement','Interface bilingue FR/EN','Développée et déployée via Replit']},
+          {title:'Stack technique',items:['Python (backend)','Interface web responsive','Déploiement cloud Replit']},
+        ],link:'https://visa-flow-smorlot.replit.app',linklabel:'Voir l\'application'},
+      en:{intro:"VisaFlow is a web app built on Replit that simplifies the visa process between France and India, providing a clear list of required documents by visa type.",
+        sections:[
+          {title:'Features',items:['Personalised guide by visa type','Clearly listed required documents','Bilingual FR/EN interface','Built & deployed on Replit']},
+          {title:'Tech Stack',items:['Python (backend)','Responsive web interface','Replit cloud deployment']},
+        ],link:'https://visa-flow-smorlot.replit.app',linklabel:'View application'}
+    }
+  },
+  {
+    id:'sql',emoji:'🗺️',
+    tag:{fr:'SQL · Data Viz · Web',en:'SQL · Data Viz · Web'},
+    title:{fr:'Lumia — Zones Accidentogènes France',en:'Lumia — French Accident Hotspots'},
+    desc:{fr:'Site web interactif visualisant les zones les plus accidentogènes en France, construit sur des requêtes SQL complexes et des données ouvertes.',en:'Interactive website visualising the most accident-prone areas in France, built on complex SQL queries and open data.'},
+    link:'https://lumiastartup.vercel.app/#features',
+    modal:{
+      fr:{intro:"Lumia est un projet data complet : analyse des accidents de la route en France via des requêtes SQL avancées, avec visualisation cartographique interactive déployée sur Vercel.",
+        sections:[
+          {title:'Fonctionnalités',items:['Cartographie des zones accidentogènes','Requêtes SQL avancées sur open data','Visualisation interactive des statistiques','Site web déployé sur Vercel']},
+          {title:'Stack technique',items:['SQL (Google BigQuery / PostgreSQL)','Frontend web interactif','Vercel (déploiement)','Open data gouvernemental']},
+        ],link:'https://lumiastartup.vercel.app/#features',linklabel:'Voir le site',link2:'https://docs.google.com/document/d/1rNgdskWAIqBAaeyckYn_9Sk78Q_DuIObSB2z6E-723s/edit?usp=sharing',link2label:'Voir les requêtes SQL'},
+      en:{intro:"Lumia is a complete data project: road accident analysis across France via advanced SQL queries, with interactive map visualisation deployed on Vercel.",
+        sections:[
+          {title:'Features',items:['Accident hotspot mapping','Advanced SQL queries on open data','Interactive statistics visualisation','Website deployed on Vercel']},
+          {title:'Tech Stack',items:['SQL (Google BigQuery / PostgreSQL)','Interactive web frontend','Vercel (deployment)','Government open data']},
+        ],link:'https://lumiastartup.vercel.app/#features',linklabel:'View website',link2:'https://docs.google.com/document/d/1rNgdskWAIqBAaeyckYn_9Sk78Q_DuIObSB2z6E-723s/edit?usp=sharing',link2label:'View SQL queries'}
+    }
+  }
+];
+
+const timeline=[
+  {date:{fr:'2025 — Aujourd\'hui',en:'2025 — Present'},role:{fr:'Étudiant Data & IA',en:'Data & AI Student'},org:'Eugenia School',desc:{fr:'Formation intensive en Data Science, IA, automatisation et Prompt Engineering. Participation à plusieurs hackathons nationaux.',en:'Intensive training in Data Science, AI, automation and Prompt Engineering. Participation in multiple national hackathons.'}},
+  {date:{fr:'2025 — Aujourd\'hui',en:'2025 — Present'},role:{fr:'Data Analyst',en:'Data Analyst'},org:'CACEIS — Groupe Crédit Agricole',desc:{fr:'Analyse de données et production de reportings au sein du groupe CACEIS, filiale de gestion d\'actifs du Crédit Agricole.',en:'Data analysis and reporting within CACEIS, the asset management subsidiary of Crédit Agricole group.'}},
+];
+
+// ── RENDER ──
+function renderSkills(){
+  const g=document.getElementById('skills-grid');g.innerHTML='';
+  skills.forEach((s,i)=>{
+    const d=document.createElement('div');d.className='skill-card';d.style.animationDelay=(i*.04)+'s';
+    d.innerHTML=`<div class="skill-icon">${s.icon}</div><div class="skill-name">${s.name[lang]||s.name.fr}</div>`;
+    g.appendChild(d);
+  });
+  observe('.skill-card');
+}
+
+function renderProjects(){
+  const g=document.getElementById('projects-grid');g.innerHTML='';
+  projects.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='project-card';d.style.animationDelay=(i*.1)+'s';
+    d.innerHTML=`
+      <div class="project-thumb">${p.emoji}</div>
+      <div class="project-body">
+        <div class="project-tag">${p.tag[lang]||p.tag.fr}</div>
+        <div class="project-title">${p.title[lang]||p.title.fr}</div>
+        <p class="project-desc">${p.desc[lang]||p.desc.fr}</p>
+        <div class="project-actions">
+          <button class="project-btn primary" onclick="openModal('${p.id}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            ${lang==='fr'?'Détails →':'Details →'}
+          </button>
+          <a class="project-btn secondary" href="${p.link}" target="_blank">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            ${lang==='fr'?'Voir':'View'}
+          </a>
         </div>
-    </section>
+      </div>`;
+    g.appendChild(d);
+  });
+  observe('.project-card');
+}
 
-    <footer id="contact">
-        <div class="socials">
-            <a href="https://github.com/morlotstephen" target="_blank">GitHub</a>
-            <a href="https://morlotstephen.github.io/" target="_blank">Site Web</a>
-        </div>
-        <p>© 2024 Stephen Morlot - Tous droits réservés</p>
-    </footer>
+function renderTimeline(){
+  const tl=document.getElementById('timeline');tl.innerHTML='';
+  timeline.forEach((t,i)=>{
+    const d=document.createElement('div');d.className='timeline-item';d.style.animationDelay=(i*.12)+'s';
+    d.innerHTML=`<div class="timeline-dot"></div><div class="timeline-date">${t.date[lang]||t.date.fr}</div><div class="timeline-role">${t.role[lang]||t.role.fr}</div><div class="timeline-org">${t.org}</div><div class="timeline-desc">${t.desc[lang]||t.desc.fr}</div>`;
+    tl.appendChild(d);
+  });
+  observe('.timeline-item');
+}
 
-    <script>
-        // --- ANIMATION DE RÉVÉLATION AU SCROLL ---
-        const observerOptions = {
-            threshold: 0.15
-        };
+function observe(sel){
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.12});
+  document.querySelectorAll(sel).forEach(el=>obs.observe(el));
+}
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, observerOptions);
+// ── MODAL ──
+function openModal(id){
+  const p=projects.find(x=>x.id===id);if(!p)return;
+  const m=p.modal[lang]||p.modal.fr;
+  document.getElementById('modal-tag').textContent=p.tag[lang]||p.tag.fr;
+  document.getElementById('modal-title').textContent=p.title[lang]||p.title.fr;
+  let html=`<p>${m.intro}</p>`;
+  m.sections.forEach(s=>{html+=`<h3>${s.title}</h3><ul>`;s.items.forEach(it=>html+=`<li>${it}</li>`);html+=`</ul>`;});
+  if(m.link)html+=`<a href="${m.link}" target="_blank" class="modal-link">🔗 ${m.linklabel||'Voir le projet'}</a>`;
+  if(m.link2)html+=`<a href="${m.link2}" target="_blank" class="modal-link">📄 ${m.link2label||'Docs'}</a>`;
+  document.getElementById('modal-body').innerHTML=html;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(e){if(e.target.id==='modalOverlay')closeModalDirect();}
+function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();});
 
-        document.querySelectorAll('.reveal').forEach(el => {
-            observer.observe(el);
-        });
+// ── LANG ──
+function setLang(l){
+  lang=l;
+  document.documentElement.lang=l;
+  document.getElementById('btn-fr').classList.toggle('active',l==='fr');
+  document.getElementById('btn-en').classList.toggle('active',l==='en');
+  document.querySelectorAll('[data-fr]').forEach(el=>{el.textContent=l==='fr'?el.dataset.fr:el.dataset.en;});
+  const bio=document.getElementById('hero-bio');
+  bio.textContent=l==='fr'?bio.dataset.fr:bio.dataset.en;
+  const ci=document.querySelector('.contact-intro');
+  ci.textContent=l==='fr'?ci.dataset.fr:ci.dataset.en;
+  renderSkills();renderProjects();renderTimeline();
+}
 
-        // --- EFFET DE PARALLAXE SUR LE HERO ---
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero-title');
-            if(hero) {
-                hero.style.transform = `translateY(${scrolled * 0.2}px)`;
-            }
-        });
-    </script>
+renderSkills();renderProjects();renderTimeline();
+</script>
 </body>
 </html>
