@@ -328,6 +328,27 @@ const skills=[
 
 const projects=[
   {
+    id:'sqlfinance',emoji:'🏦',
+    tag:{fr:'SQL · Finance · Banque',en:'SQL · Finance · Banking'},
+    title:{fr:'SQL Finance Analytics',en:'SQL Finance Analytics'},
+    desc:{fr:'Requêtes SQL avancées dans le domaine bancaire : scoring de risque crédit, détection de fraude, rentabilité de portefeuille, Bâle III.',en:'Advanced SQL queries in banking: credit risk scoring, fraud detection, portfolio profitability, Basel III compliance.'},
+    link:'https://morlotstephen.github.io/SQL-Finance/',
+    modal:{
+      fr:{intro:"Analyse avancée de données bancaires et financières via 6 requêtes SQL complexes combinant CTEs chaînées, window functions, HAVING, LAG et PERCENTILE.",
+        sections:[
+          {title:'Requêtes réalisées',items:['Scoring de risque crédit (CTE + CASE WHEN)','Détection de fraudes transactionnelles (Z-score + Window Fn)','Rentabilité des portefeuilles de prêts (NIM + HAVING)','Valeur Vie Client LTV (PERCENTILE_CONT)','Évolution PNB Year-over-Year (LAG + YTD)','Concentration du risque Bâle III (Large Exposures)']},
+          {title:'Concepts SQL utilisés',items:['WITH … AS (CTEs chaînées)','WINDOW FUNCTIONS : RANK, LAG, SUM OVER, AVG OVER','GROUP BY / HAVING avancé','CASE WHEN imbriqués','NULLIF, COALESCE, DATE_DIFF']},
+          {title:'Domaines couverts',items:['Risque de crédit','Conformité réglementaire (Bâle III)','Fraud detection','Analyse de rentabilité bancaire']},
+        ],link:'https://morlotstephen.github.io/SQL-Finance/',linklabel:'Voir le projet'},
+      en:{intro:"Advanced banking and financial data analysis via 6 complex SQL queries combining chained CTEs, window functions, HAVING, LAG and PERCENTILE.",
+        sections:[
+          {title:'Queries covered',items:['Credit risk scoring (CTE + CASE WHEN)','Transactional fraud detection (Z-score + Window Fn)','Loan portfolio profitability (NIM + HAVING)','Customer Lifetime Value LTV (PERCENTILE_CONT)','YoY PNB evolution (LAG + YTD)','Basel III risk concentration (Large Exposures)']},
+          {title:'SQL concepts used',items:['WITH … AS (chained CTEs)','WINDOW FUNCTIONS: RANK, LAG, SUM OVER, AVG OVER','Advanced GROUP BY / HAVING','Nested CASE WHEN','NULLIF, COALESCE, DATE_DIFF']},
+          {title:'Domains covered',items:['Credit risk','Regulatory compliance (Basel III)','Fraud detection','Banking profitability analysis']},
+        ],link:'https://morlotstephen.github.io/SQL-Finance/',linklabel:'View project'}
+    }
+  },
+  {
     id:'scraping',emoji:'⚽',
     tag:{fr:'Python · Scraping · Data',en:'Python · Scraping · Data'},
     title:{fr:'Extraction Stats Football — FBref',en:'Football Stats Scraper — FBref'},
